@@ -64,9 +64,6 @@ services:
         ipv4_address: 172.16.0.4
     labels:
       - "traefik.enable=false"
-      - "traefik.http.routers.ool-server.entrypoints=https"
-      - "traefik.http.routers.ool-server.rule=Host(`ool-server.ax9.eu`)"
-      - "traefik.http.routers.ool-server.tls.certresolver=myhttpchallenge"
 
   client-admin:
     image: openolitor/openolitor-client-admin
@@ -80,9 +77,6 @@ services:
         ipv4_address: 172.16.0.5
     labels:
       - "traefik.enable=false"
-      - "traefik.http.routers.ool-admin.entrypoints=https"
-      - "traefik.http.routers.ool-admin.rule=Host(`ool-admin.ax9.eu`)"
-      - "traefik.http.routers.ool-admin.tls.certresolver=myhttpchallenge"
 
   client-kundenportal:
     image: openolitor/openolitor-client-kundenportal
@@ -96,9 +90,6 @@ services:
         ipv4_address: 172.16.0.6
     labels:
       - "traefik.enable=false"
-      - "traefik.http.routers.ool.entrypoints=https"
-      - "traefik.http.routers.ool.rule=Host(`ool.ax9.eu`)"
-      - "traefik.http.routers.ool.tls.certresolver=myhttpchallenge"
 
   nginx:
     image: nginx:latest
@@ -133,6 +124,8 @@ services:
     networks: 
       ooNet:
         ipv4_address: 172.16.0.8
+    labels:
+    - "traefik.enable=false"
 
   smtp-proxy:
     image: mailhog/mailhog
@@ -146,11 +139,7 @@ services:
       ooNet:
         ipv4_address: 172.16.0.9
     labels:
-    - "traefik.enable=true"
-    - "traefik.http.routers.ool-smtp-proxy.entrypoints=https"
-    - "traefik.http.routers.ool-smtp-proxy.rule=Host(`ool-smtp-proxy.ax9.eu`)"
-    - "traefik.http.routers.ool-smtp-proxy.tls.certresolver=myhttpchallenge"
-
+    - "traefik.enable=false"
 
 networks:
   ooNet:
