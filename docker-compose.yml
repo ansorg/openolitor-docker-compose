@@ -60,7 +60,7 @@ services:
       timeout: 20s
       retries: 3
     networks: 
-      - web
+      web:
       ooNet:
         ipv4_address: 172.16.0.4
     labels:
@@ -77,7 +77,7 @@ services:
     volumes:
       - ./config/client/admin/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
-      - web
+      web:
       ooNet:
         ipv4_address: 172.16.0.5
     labels:
@@ -94,7 +94,7 @@ services:
     volumes:
       - ./config/client/kundenportal/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
-      - web
+      web:
       ooNet:
         ipv4_address: 172.16.0.6
     labels:
@@ -120,8 +120,8 @@ services:
       - "1025:1025"
       - "8025:8025"
     networks: 
-      - web
-      - ooNet:
+      web:
+      ooNet:
         ipv4_address: 172.16.0.9
     labels:
     - "traefik.enable=true"
