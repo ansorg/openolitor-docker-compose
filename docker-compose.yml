@@ -60,11 +60,10 @@ services:
       timeout: 20s
       retries: 3
     networks: 
-      web:
       ooNet:
         ipv4_address: 172.16.0.4
     labels:
-      - "traefik.enable=true"
+      - "traefik.enable=false"
       - "traefik.http.routers.ool-server.entrypoints=https"
       - "traefik.http.routers.ool-server.rule=Host(`ool-server.ax9.eu`)"
       - "traefik.http.routers.ool-server.tls.certresolver=myhttpchallenge"
@@ -77,11 +76,10 @@ services:
     volumes:
       - ./config/client/admin/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
-      web:
       ooNet:
         ipv4_address: 172.16.0.5
     labels:
-      - "traefik.enable=true"
+      - "traefik.enable=false"
       - "traefik.http.routers.ool-admin.entrypoints=https"
       - "traefik.http.routers.ool-admin.rule=Host(`ool-admin.ax9.eu`)"
       - "traefik.http.routers.ool-admin.tls.certresolver=myhttpchallenge"
@@ -94,9 +92,33 @@ services:
     volumes:
       - ./config/client/kundenportal/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
-      web:
       ooNet:
         ipv4_address: 172.16.0.6
+    labels:
+      - "traefik.enable=false"
+      - "traefik.http.routers.ool.entrypoints=https"
+      - "traefik.http.routers.ool.rule=Host(`ool.ax9.eu`)"
+      - "traefik.http.routers.ool.tls.certresolver=myhttpchallenge"
+
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    environment:
+      - TZ=UTC
+    ports:
+      - "8785:9000"
+      - "13423:13423"
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/smtp-proxy-htpasswd:/etc/nginx/htpasswd
+    depends_on:
+      - client-admin
+      - client-kundenportal
+      - server
+    networks: 
+      web:
+      ooNet:
+        ipv4_address: 172.16.0.7
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ool.entrypoints=https"
