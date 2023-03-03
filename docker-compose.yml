@@ -6,9 +6,8 @@ services:
     restart: unless-stopped
     
     mem_limit: 300m
-    
+    env_file: .env
     environment:
-      - MYSQL_ROOT_PASSWORD=ofCourseThisIsTrueForTheRootPasswordToo
       - TZ=UTC
     volumes:
       - ./data/mysql:/var/lib/mysql
@@ -22,9 +21,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/s3:/data
-    environment:
-      - MINIO_ACCESS_KEY=miniouserallcsa
-      - MINIO_SECRET_KEY=thedefaultminiosecretneedstobechanged
+    env_file: .env
     command: server /data
     ## depending on network setup
     ports:
