@@ -15,6 +15,8 @@ services:
     networks: 
       ooNet:
         ipv4_address: 172.16.0.2
+    labels:
+      - traefik.enable=false
 
   s3:
     image: minio/minio:RELEASE.2022-10-24T18-35-07Z
@@ -34,6 +36,8 @@ services:
     networks: 
       ooNet:
         ipv4_address: 172.16.0.3
+    labels:
+      - traefik.enable=false
 
   server:
     image: openolitor/openolitor-server
@@ -56,8 +60,14 @@ services:
       timeout: 20s
       retries: 3
     networks: 
-      ooNet:
+      - web
+      - ooNet:
         ipv4_address: 172.16.0.4
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=https"
+      - "traefik.http.routers.nextcloud.rule=Host(`ool-server.ax9.eu`)"
+      - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
 
   client-admin:
     image: openolitor/openolitor-client-admin
@@ -67,8 +77,14 @@ services:
     volumes:
       - ./config/client/admin/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
-      ooNet:
+      - web
+      - ooNet:
         ipv4_address: 172.16.0.5
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=https"
+      - "traefik.http.routers.nextcloud.rule=Host(`ool-admin.ax9.eu`)"
+      - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
 
   client-kundenportal:
     image: openolitor/openolitor-client-kundenportal
@@ -78,27 +94,14 @@ services:
     volumes:
       - ./config/client/kundenportal/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
-      ooNet:
+      - web
+      - ooNet:
         ipv4_address: 172.16.0.6
-
-  nginx:
-    image: nginx:latest
-    restart: unless-stopped
-    environment:
-      - TZ=UTC
-    ports:
-      - "8785:9000"
-      - "13423:13423"
-    volumes:
-      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./config/nginx/smtp-proxy-htpasswd:/etc/nginx/htpasswd
-    depends_on:
-      - client-admin
-      - client-kundenportal
-      - server
-    networks: 
-      ooNet:
-        ipv4_address: 172.16.0.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=https"
+      - "traefik.http.routers.nextcloud.rule=Host(`ool.ax9.eu`)"
+      - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
 
   pdf-tool:
     image: eugenmayer/jodconverter:rest
@@ -117,9 +120,15 @@ services:
       - "1025:1025"
       - "8025:8025"
     networks: 
-      ooNet:
+      - web
+      - ooNet:
         ipv4_address: 172.16.0.9
-  
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.nextcloud.entrypoints=https"
+    - "traefik.http.routers.nextcloud.rule=Host(`ool-smtp-proxy.ax9.eu`)"
+    - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
+
 
 networks:
   ooNet:
@@ -129,3 +138,5 @@ networks:
       config:
         - subnet: 172.16.0.0/16
           gateway: 172.16.0.1
+  web:
+    external: true
