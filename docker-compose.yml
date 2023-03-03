@@ -65,9 +65,9 @@ services:
         ipv4_address: 172.16.0.4
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.entrypoints=https"
-      - "traefik.http.routers.nextcloud.rule=Host(`ool-server.ax9.eu`)"
-      - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.ool-server.entrypoints=https"
+      - "traefik.http.routers.ool-server.rule=Host(`ool-server.ax9.eu`)"
+      - "traefik.http.routers.ool-server.tls.certresolver=myhttpchallenge"
 
   client-admin:
     image: openolitor/openolitor-client-admin
@@ -82,9 +82,9 @@ services:
         ipv4_address: 172.16.0.5
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.entrypoints=https"
-      - "traefik.http.routers.nextcloud.rule=Host(`ool-admin.ax9.eu`)"
-      - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.ool-admin.entrypoints=https"
+      - "traefik.http.routers.ool-admin.rule=Host(`ool-admin.ax9.eu`)"
+      - "traefik.http.routers.ool-admin.tls.certresolver=myhttpchallenge"
 
   client-kundenportal:
     image: openolitor/openolitor-client-kundenportal
@@ -99,9 +99,9 @@ services:
         ipv4_address: 172.16.0.6
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.entrypoints=https"
-      - "traefik.http.routers.nextcloud.rule=Host(`ool.ax9.eu`)"
-      - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.ool.entrypoints=https"
+      - "traefik.http.routers.ool.rule=Host(`ool.ax9.eu`)"
+      - "traefik.http.routers.ool.tls.certresolver=myhttpchallenge"
 
   pdf-tool:
     image: eugenmayer/jodconverter:rest
@@ -125,9 +125,9 @@ services:
         ipv4_address: 172.16.0.9
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.nextcloud.entrypoints=https"
-    - "traefik.http.routers.nextcloud.rule=Host(`ool-smtp-proxy.ax9.eu`)"
-    - "traefik.http.routers.nextcloud.tls.certresolver=myhttpchallenge"
+    - "traefik.http.routers.ool-smtp-proxy.entrypoints=https"
+    - "traefik.http.routers.ool-smtp-proxy.rule=Host(`ool-smtp-proxy.ax9.eu`)"
+    - "traefik.http.routers.ool-smtp-proxy.tls.certresolver=myhttpchallenge"
 
 
 networks:
