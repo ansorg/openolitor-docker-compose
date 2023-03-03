@@ -61,7 +61,7 @@ services:
       retries: 3
     networks: 
       - web
-      - ooNet:
+      ooNet:
         ipv4_address: 172.16.0.4
     labels:
       - "traefik.enable=true"
@@ -78,7 +78,7 @@ services:
       - ./config/client/admin/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
       - web
-      - ooNet:
+      ooNet:
         ipv4_address: 172.16.0.5
     labels:
       - "traefik.enable=true"
@@ -95,7 +95,7 @@ services:
       - ./config/client/kundenportal/config.js:/usr/share/nginx/html/environments/config.js
     networks: 
       - web
-      - ooNet:
+      ooNet:
         ipv4_address: 172.16.0.6
     labels:
       - "traefik.enable=true"
